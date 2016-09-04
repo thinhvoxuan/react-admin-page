@@ -1,28 +1,20 @@
-import React, { Component } from 'react';
-import cookie from 'react-cookie';
-import { connect } from 'react-redux';
-import { fetchUser } from '../../../actions/index';
+import React, { Component } from 'react'
+import cookie from 'react-cookie'
 
-import UserInfo from './user-info';
+import UserInfo from './user-info'
 
 class ViewProfile extends Component {
-  componentWillMount() {
+  componentWillMount () {
     // Fetch user data prior to component mounting
-    const userId = cookie.load('uid');
-    this.props.fetchUser(userId);
+    const userId = cookie.load('uid')
+    this.props.fetchUser(userId)
   }
 
-  render() {
+  render () {
     return (
       <UserInfo profile={this.props.profile.email} />
-    );
+    )
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    profile: state.user.profile
-  }
-}
-
-export default connect(mapStateToProps, { fetchUser })(ViewProfile);
+export default ViewProfile

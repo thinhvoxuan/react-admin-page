@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../actions/auth';
+import React, { Component } from 'react'
+import { observer, inject } from 'mobx-react'
 
+@inject('authStore') @observer
 class Logout extends Component {
-  componentWillMount() {
-      this.props.logoutUser();
-  }
+  componentWillMount () {}
 
-  render() {
-    return <div>Sorry to see you go!</div>;
+  render () {
+    return <div>
+             Sorry to see you go!
+           </div>
   }
 }
 
-export default connect(null, actions)(Logout);
+export default Logout

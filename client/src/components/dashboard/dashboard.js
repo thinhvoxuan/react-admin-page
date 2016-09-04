@@ -1,70 +1,70 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import cookie from 'react-cookie';
-import { protectedTest } from '../../actions/auth';
+import React, { Component } from 'react'
+import { Link } from 'react-router'
+import cookie from 'react-cookie'
 
 class Dashboard extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.props.protectedTest();
+  constructor (props) {
+    super(props)
   }
 
-  isRole(roleToCheck, toRender) {
-    let user = cookie.load('user');
+  isRole (roleToCheck, toRender) {
+    let user = cookie.load('user')
     if (!user)
       return false
 
-    let userRole = user.role;
+    let userRole = user.role
 
     if (userRole == roleToCheck) {
-      return toRender;
+      return toRender
     }
 
-    return false;
+    return false
   }
 
-  adminMenu() {
+  adminMenu () {
     return (
-      <div className="admin-menu">
-        <Link to="/admin">Admin</Link>
+      <div className='admin-menu'>
+        <Link to='/admin'> Admin
+        </Link>
       </div>
-    );
+    )
   }
 
-  ownerMenu() {
+  ownerMenu () {
     return (
-      <div className="trainer-menu">
+      <div className='trainer-menu'>
         Owner menu coming soon.
       </div>
-    );
+    )
   }
 
-  clientMenu() {
+  clientMenu () {
     return (
-      <div className="client-menu">
+      <div className='client-menu'>
         Client menu coming soon.
       </div>
-    );
+    )
   }
 
-  render() {
+  render () {
     return (
       <div>
-        <Link to="/dashboard/inbox">Inbox</Link> | <Link to="/profile/edit">Edit Profile</Link> | <Link to="/billing/settings">Billing</Link>
-        {this.isRole("Admin", this.adminMenu())}
-        {this.isRole("Owner", this.ownerMenu())}
-        {this.isRole("Client", this.clientMenu())}
-        <p>{this.props.content}</p>
+        <Link to='/dashboard/inbox'> Inbox
+        </Link> |
+        <Link to='/profile/edit'> Edit Profile
+        </Link> |
+        <Link to='/billing/settings'> Billing
+        </Link>
+        {this.isRole('Admin', this.adminMenu())}
+        {this.isRole('Owner', this.ownerMenu())}
+        {this.isRole('Client', this.clientMenu())}
+        <p>
+          {this.props.content}
+        </p>
       </div>
-    );
+    )
   }
 }
 
-function mapStateToProps(state) {
-  return { content: state.auth.content };
-}
-
-export default connect(mapStateToProps, { protectedTest })(Dashboard);
+export default Dashboard

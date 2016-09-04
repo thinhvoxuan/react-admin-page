@@ -1,101 +1,101 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-import { resetPassword } from '../../actions/auth';
+import React, { Component } from 'react'
+import { observer, inject } from 'mobx-react'
 
-const form = reduxForm({
-  form: 'resetPassword',
-  validate
-});
-
-function validate(formProps) {
-  const errors = {};
+function validate (formProps) {
+  const errors = {}
 
   if (!formProps.password) {
-    errors.password = 'Please enter a new password';
+    errors.password = 'Please enter a new password'
   }
 
   if (!formProps.passwordConfirm) {
-    errors.passwordConfirm = 'Please confirm new password';
+    errors.passwordConfirm = 'Please confirm new password'
   }
 
   if (formProps.password !== formProps.passwordConfirm) {
-    errors.password = 'Passwords must match';
+    errors.password = 'Passwords must match'
   }
 
-  return errors;
+  return errors
 }
 
 const renderField = field => (
-    <div>
-      <input className="form-control" {...field.input}/>
-      {field.touched && field.error && <div className="error">{field.error}</div>}
-    </div>
-);
+  <div>
+    <input className='form-control' {...field.input}/>
+    {field.touched && field.error && <div className='error'>
+                                       {field.error}
+                                     </div>}
+  </div>
+)
 
+@inject('authStore') @observer
 class ResetPassword extends Component {
   static contextTypes = {
     router: React.PropTypes.object
   }
 
-  componentWillMount() {
-    if(this.props.authenticated) {
-      this.context.router.push('/dashboard');
+  componentWillMount () {
+    if (this.props.authenticated) {
+      this.context.router.push('/dashboard')
     }
   }
 
-  componentWillUpdate(nextProps) {
-    if(nextProps.authenticated) {
-      this.context.router.push('/dashboard');
+  componentWillUpdate (nextProps) {
+    if (nextProps.authenticated) {
+      this.context.router.push('/dashboard')
     }
   }
 
-  handleFormSubmit({ password }) {
-    const resetToken = this.props.params.resetToken;
-    this.props.resetPassword( resetToken, { password });
+  handleFormSubmit ({ password }) {
+    const resetToken = this.props.params.resetToken
+    this.props.resetPassword(resetToken, { password})
   }
 
-  renderAlert() {
+  renderAlert () {
     if (this.props.errorMessage) {
       return (
-        <div className="alert alert-danger">
-          <strong>Oops!</strong> {this.props.errorMessage}
+        <div className='alert alert-danger'>
+          <strong>Oops!</strong>
+          {this.props.errorMessage}
         </div>
-      );
+      )
     } else if (this.props.message) {
       return (
-        <div className="alert alert-success">
-          <strong>Success!</strong> {this.props.message}
+        <div className='alert alert-success'>
+          <strong>Success!</strong>
+          {this.props.message}
         </div>
-      );
+      )
     }
   }
 
-  render() {
-    const { handleSubmit } = this.props;
+  render () {
+    const { handleSubmit } = this.props
 
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <fieldset className="form-group">
-          <label>New Password:</label>
-          <Field name="password" component={renderField} type="password" />
+        <fieldset className='form-group'>
+          <label>
+            New Password:
+          </label>
+          <input name='password' component={renderField} type='password' />
         </fieldset>
-
-        <fieldset className="form-group">
-          <label>Confirm New Password:</label>
-          <Field name="passwordConfirm" component={renderField} type="password" />
-          {passwordConfirm.touched && passwordConfirm.error && <div className="error">{passwordConfirm.error}</div>}
+        <fieldset className='form-group'>
+          <label>
+            Confirm New Password:
+          </label>
+          <input name='passwordConfirm' component={renderField} type='password' />
+          {passwordConfirm.touched && passwordConfirm.error && <div className='error'>
+                                                                 {passwordConfirm.error}
+                                                               </div>}
         </fieldset>
-
         {this.renderAlert()}
-        <button action="submit" className="btn btn-primary">Change Password</button>
+        <button action='submit' className='btn btn-primary'>
+          Change Password
+        </button>
       </form>
-    );
+    )
   }
 }
 
-function mapStateToProps(state) {
-  return { errorMessage: state.auth.error, message: state.auth.resetMessage };
-}
-
-export default connect(mapStateToProps, { resetPassword })(form(ResetPassword));
+export default ResetPassword
