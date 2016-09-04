@@ -1,9 +1,25 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { observer, inject } from 'mobx-react'
+import { browserHistory } from 'react-router'
 
 @inject('authStore') @observer
 class Login extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      email: 'thinhvoxuan@gmail.com',
+      password: 'abc123'
+    }
+  }
+
+  submitLoginFunction (e) {
+    e.preventDefault()
+    this.props.authStore.login(this.state).then((response) => {
+      browserHistory.push('/dashboard')
+    })
+  }
+
   renderAlert () {
     if (this.props.errorMessage) {
       return (
@@ -13,31 +29,43 @@ class Login extends Component {
       )
     }
   }
+
+  changeEmail (ev) {
+    this.setState({email: ev.target.value})
+  }
+
+  changePassword (ev) {
+    this.setState({password: ev.target.value})
+  }
+
   render () {
-    console.log('login props: ', this.props)
     return (
       <div>
-        <form>
+        <form onSubmit={this.submitLoginFunction.bind(this)}>
           {this.renderAlert()}
           <div>
             <label>
               Email
             </label>
             <input
+              value={this.state.email}
               name='email'
               className='form-control'
               component='input'
-              type='text' />
+              type='text'
+              onChange={this.changeEmail.bind(this)} />
           </div>
           <div>
             <label>
               Password
             </label>
             <input
+              value={this.state.password}
               name='password'
               className='form-control'
               component='input'
-              type='password' />
+              type='password'
+              onChange={this.changePassword.bind(this)} />
           </div>
           <button type='submit' className='btn btn-primary'>
             Login
@@ -47,14 +75,6 @@ class Login extends Component {
         </Link>
       </div>
     )
-  }
-}
-
-function mapStateToProps (state) {
-  return {
-    errorMessage: state.auth.error,
-    message: state.auth.message,
-    authenticated: state.auth.authenticated
   }
 }
 

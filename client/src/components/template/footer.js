@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
+import { observer, inject } from 'mobx-react'
 
+@inject('authStore') @observer
 class FooterTemplate extends Component {
   renderLinks () {
-    if (this.props.authenticated) {
+    if (this.props.authStore.isLogged) {
       return [
         <li key={1}>
           <Link to='/'> Home

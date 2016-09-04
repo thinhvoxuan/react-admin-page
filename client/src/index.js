@@ -5,9 +5,12 @@ import cookie from 'react-cookie'
 import routes from './routes'
 import ReactGA from 'react-ga'
 
+import { useStrict } from 'mobx'
 import { Provider } from 'mobx-react'
 import userStore from './stores/userStore'
 import authStore from './stores/authStore'
+
+useStrict(true)
 
 // Import stylesheets
 import './public/stylesheets/base.scss'
