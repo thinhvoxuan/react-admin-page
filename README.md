@@ -30,6 +30,6 @@ npm run start
 
 # TODO
 
-- [ ] split API from action/index to api/index
+- [x] split API from action/index to api/index
 - [ ] merge action with reducers from redux to store
 - [ ] apply theme for project
