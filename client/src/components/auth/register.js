@@ -1,16 +1,19 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
 
 @inject('authStore') @observer
 class Register extends Component {
+  static contextTypes = {
+    router: PropTypes.object
+  }
 
-  constructor (props) {
-    super(props)
+  constructor (props, context) {
+    super(props, context)
     this.state = {
-      firstName: 'thinh',
-      lastName: 'voxuan',
-      email: 'thinhvoxuan@gmail.com',
-      password: 'abc123',
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
       errorMessage: ''
     }
   }
@@ -28,10 +31,9 @@ class Register extends Component {
   submitRegisterFunction (e) {
     e.preventDefault()
     this.props.authStore.register(this.state).then((response) => {
-      this.props.route.push('/dashboard')
+      this.context.router.push('/dashboard')
     }).catch((err) => {
       let message = err.response.data.error
-      console.log('message: ', message)
       this.setState({
         errorMessage: message
       })

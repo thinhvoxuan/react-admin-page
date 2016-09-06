@@ -44,13 +44,6 @@ class AuthStore {
     this.token = null
     cookie.remove('token', { path: '/' })
   }
-
-  @action
-  register (information) {
-    return registerUser(information).then((response) => {
-      return response
-    })
-  }
 }
 
 const authStore = new AuthStore()
