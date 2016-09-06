@@ -20,13 +20,21 @@ class AuthStore {
   @action
   setToken (token) {
     this.token = token
+    cookie.save('token', this.token, { path: '/' })
   }
 
   @action
   login (credential) {
     return loginUser(credential).then((response) => {
       this.setToken(response.data.token)
-      cookie.save('token', this.token, { path: '/' })
+      return response
+    })
+  }
+
+  @action
+  register (credential) {
+    return registerUser(credential).then((response) => {
+      this.setToken(response.data.token)
       return response
     })
   }

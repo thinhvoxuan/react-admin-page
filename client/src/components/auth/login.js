@@ -1,30 +1,34 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { observer, inject } from 'mobx-react'
-import { browserHistory } from 'react-router'
 
 @inject('authStore') @observer
 class Login extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      email: 'thinhvoxuan@gmail.com',
-      password: 'abc123'
+      email: '',
+      password: '',
+      errorMessage: ''
     }
   }
 
   submitLoginFunction (e) {
     e.preventDefault()
     this.props.authStore.login(this.state).then((response) => {
-      browserHistory.push('/dashboard')
+      this.props.route.push('/dashboard')
+    }).catch((err) => {
+      this.setState({
+        errorMessage: 'Wrong email or password'
+      })
     })
   }
 
   renderAlert () {
-    if (this.props.errorMessage) {
+    if (this.state.errorMessage) {
       return (
         <div>
-          <span><strong>Error!</strong> {this.props.errorMessage}</span>
+          <span><strong>Error!</strong> {this.state.errorMessage}</span>
         </div>
       )
     }
