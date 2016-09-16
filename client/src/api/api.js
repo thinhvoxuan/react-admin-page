@@ -1,9 +1,14 @@
 import axios from 'axios'
 import cookie from 'react-cookie'
 import { API_URL, CLIENT_ROOT_URL, errorHandler } from './index'
+import { authStore } from '../stores/authStore'
 
 export function loginUser ({ email, password }) {
-  return axios.post(`${API_URL}/auth/login`, { email, password})
+  return axios.post(`${API_URL}/auth/login`, { email, password}).then((response) => {
+    authStore.setToken(response.data.token)
+  }).catch((error) => {
+    authStore.setLoginError(response.data.error.message)
+  })
 }
 
 export function registerUser ({ email, firstName, lastName, password }) {

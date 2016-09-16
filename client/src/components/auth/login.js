@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { observer, inject } from 'mobx-react'
+import {Login} from '../../../api/api'
 
 @inject('authStore') @observer
 class Login extends Component {
@@ -18,20 +19,20 @@ class Login extends Component {
 
   submitLoginFunction (e) {
     e.preventDefault()
-    this.props.authStore.login(this.state).then((response) => {
+    Login(this.state);
+  }
+
+  componentWillUpdate(nextProps){
+    if (this.props.authStore.isLogged) {
       this.context.router.push('/dashboard')
-    }).catch((err) => {
-      this.setState({
-        errorMessage: 'Wrong email or password'
-      })
-    })
+    }
   }
 
   renderAlert () {
-    if (this.state.errorMessage) {
+    if (this.props.authStore.LoginErrorMessage) {
       return (
         <div>
-          <span><strong>Error!</strong> {this.state.errorMessage}</span>
+          <span><strong>Error!</strong> {this.props.authStore.LoginErrorMessage}</span>
         </div>
       )
     }
@@ -86,3 +87,19 @@ class Login extends Component {
 }
 
 export default Login
+
+
+wrappedForm(LoginCOntainer, loginFormStore){
+  class Wappred extends Component {
+
+    render(){
+      return <LoginCOntainer loginFormStore={loginFormStore} ...this.props  />
+    }
+  }
+  return Wrappred
+}
+
+
+import loginFormStore from './'
+
+export default wrappedForm(Login, loginFormStore)
